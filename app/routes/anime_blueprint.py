@@ -1,9 +1,20 @@
 from flask import Blueprint
-from app.controllers.anime_controller import get_create, filter, delete, update
+from app.controllers.anime_controller import getting_creating, filtering, deleting, updating
 
-bp = Blueprint('bp_animes', __name__, url_prefix='/animes')
+bp_animes = Blueprint('bp_animes', __name__, url_prefix='/animes')
 
-bp.route("", methods=['POST', 'GET'])(get_create)
-bp.get("/<int:anime_id>")(filter)
-bp.delete("/<int:anime_id>")(delete)
-bp.patch("/<int:anime_id>")(update)
+@bp_animes.route("", methods=['POST', 'GET'])
+def get_create():
+    return getting_creating()
+
+@bp_animes.get("/<int:anime_id>")
+def filter(anime_id):
+    return filtering(anime_id)
+
+@bp_animes.delete("/<int:anime_id>")
+def delete(anime_id):
+    return deleting(anime_id)
+
+@bp_animes.patch("/<int:anime_id>")
+def update(anime_id):
+    return updating(anime_id)

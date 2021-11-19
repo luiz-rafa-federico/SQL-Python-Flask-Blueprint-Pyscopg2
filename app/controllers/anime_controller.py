@@ -4,7 +4,7 @@ from psycopg2 import errorcodes
 from http import HTTPStatus
 
 
-def get_create():
+def getting_creating():
     try:
         if request.method == 'POST':
             data = request.get_json()
@@ -18,21 +18,21 @@ def get_create():
             return jsonify({'error': 'Anime already exists'}), HTTPStatus.UNPROCESSABLE_ENTITY
 
 
-def filter(anime_id):
+def filtering(anime_id):
     try:
         return jsonify(Anime.read_by_id(anime_id)), HTTPStatus.OK
     except KeyError as e:
         return jsonify(e.args[0]), HTTPStatus.NOT_FOUND
 
 
-def delete(anime_id):
+def deleting(anime_id):
     try:
         return jsonify(Anime.delete_anime(anime_id)), HTTPStatus.NO_CONTENT
     except KeyError as e:
         return jsonify(e.args[0]), HTTPStatus.NOT_FOUND
 
 
-def update(anime_id):
+def updating(anime_id):
     data = request.get_json()
     try:
         return jsonify(Anime.update_anime(anime_id, data)), HTTPStatus.OK

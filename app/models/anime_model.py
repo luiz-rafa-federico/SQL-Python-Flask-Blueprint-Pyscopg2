@@ -3,17 +3,17 @@ from psycopg2 import sql, IntegrityError
 
 
 class Anime():
-    anime_keys = ['anime', 'release_date', 'seasons']
+    anime_keys = ['anime', 'released_date', 'seasons']
 
     def __init__(self, fields):
         if type(fields) is tuple:
-            self.id, self.anime, self.release_date, self.seasons = fields
+            self.id, self.anime, self.released_date, self.seasons = fields
 
         elif type(fields) is dict:
             for key in fields.keys():
                 if key in Anime.anime_keys:
                     self.anime = str(fields['anime']).title()
-                    self.release_date = fields['release_date']
+                    self.released_date = fields['released_date']
                     self.seasons = fields['seasons']
                 else:
                     if KeyError():
@@ -29,7 +29,7 @@ class Anime():
 
         query = """
             INSERT INTO animes
-                (anime, release_date, seasons)
+                (anime, released_date, seasons)
             VALUES
                 (%s, %s, %s)
             RETURNING *
@@ -70,7 +70,6 @@ class Anime():
                         'available_keys': [key for key in Anime.anime_keys],
                         'wrong_keys_sent': [key for key in payload.keys() if key not in Anime.anime_keys]
                     }
-
                 raise KeyError(message)
 
         query = sql.SQL(
