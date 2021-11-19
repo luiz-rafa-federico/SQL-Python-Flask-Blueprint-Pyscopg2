@@ -15,7 +15,7 @@ def getting_creating():
         return jsonify(e.args[0]), HTTPStatus.UNPROCESSABLE_ENTITY
     except IntegrityError as e:
         if e.pgcode == errorcodes.UNIQUE_VIOLATION:
-            return jsonify({'error': 'Anime already exists'}), HTTPStatus.UNPROCESSABLE_ENTITY
+            return jsonify({'error': 'Anime already exists'}), HTTPStatus.CONFLICT
 
 
 def filtering(anime_id):

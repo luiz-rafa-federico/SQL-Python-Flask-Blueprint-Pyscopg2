@@ -73,7 +73,8 @@ class Anime():
             if key in Anime.anime_keys:
                 columns = [sql.Identifier(key) for key in payload.keys()]
                 values = [sql.Literal(value) for value in payload.values()]
-            raise KeyError(err_message)
+            else:
+                raise KeyError(err_message)
 
         query = sql.SQL(
             """
