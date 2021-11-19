@@ -53,24 +53,27 @@ class Anime():
 
         conn, cur = conn_cur()
 
+        cur.execute("""
+                    SELECT * FROM animes WHERE id=(%s);
+                """, (anime_id,))
+
+        has_id = cur.fetchone()
+        err_message = {}
+
+        if has_id:
+            err_message = {
+                'available_keys': [key for key in Anime.anime_keys],
+                'wrong_keys_sent': [key for key in payload.keys() if key not in Anime.anime_keys]
+            }
+        else:
+            err_message = {'error': 'Not found'}
+            raise KeyError(err_message)
+
         for key in payload.keys():
             if key in Anime.anime_keys:
                 columns = [sql.Identifier(key) for key in payload.keys()]
                 values = [sql.Literal(value) for value in payload.values()]
-            else:
-                cur.execute("""
-                    SELECT * FROM animes WHERE id=(%s);
-                """, (anime_id,))
-
-                has_id = cur.fetchone()
-                message = {'error': 'Not found'}
-
-                if has_id:
-                    message = {
-                        'available_keys': [key for key in Anime.anime_keys],
-                        'wrong_keys_sent': [key for key in payload.keys() if key not in Anime.anime_keys]
-                    }
-                raise KeyError(message)
+            raise KeyError(err_message)
 
         query = sql.SQL(
             """
