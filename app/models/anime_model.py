@@ -59,8 +59,7 @@ class Anime():
                 values = [sql.Literal(value) for value in payload.values()]
             else:
                 cur.execute("""
-                    SELECT * FROM animes
-                    WHERE id =%s
+                    SELECT * FROM animes WHERE id=(%s);
                 """, (anime_id,))
 
                 has_id = cur.fetchone()
@@ -144,7 +143,7 @@ class Anime():
             DELETE FROM
                 animes
             WHERE
-                id=%s
+                id=(%s)
             RETURNING *
         """
 
